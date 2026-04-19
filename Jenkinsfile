@@ -23,12 +23,13 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh '''
-                        sonar-scanner \
-                        -Dsonar.projectKey=COMP367-GroupProject \
-                        -Dsonar.sources=community-service \
-                        -Dsonar.exclusions=**/node_modules/**
-                    '''
+                    script {
+                        def scannerHome = tool 'SonarQube Scanner'
+                        sh "${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=COMP367-GroupProject \
+                            -Dsonar.sources=community-service \
+                            -Dsonar.exclusions=**/node_modules/**"
+                    }
                 }
             }
         }
